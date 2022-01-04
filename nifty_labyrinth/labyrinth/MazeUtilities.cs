@@ -31,7 +31,7 @@ public class MazeUtilities
      */
     public static bool isPathToFreedom(MazeCell start, String moves)
     {
-        MazeCell curr = start;
+        MazeCell? curr = start;
         HashSet<String> items = new HashSet<String>();
 
         /* Fencepost issue: pick up items from starting location, if any. */
