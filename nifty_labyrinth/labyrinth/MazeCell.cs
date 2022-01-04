@@ -11,4 +11,8 @@ public class MazeCell
     public MazeCell south = null;
     public MazeCell east = null;
     public MazeCell west = null;
+    public override string ToString()
+    {
+        return this.GetHashCode().ToString();
+    }
 }

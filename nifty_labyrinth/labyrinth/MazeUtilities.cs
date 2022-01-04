@@ -119,7 +119,8 @@ public class MazeUtilities
         /* Java Random is guaranteed to produce the same sequence of values across
          * all systems with the same seed.
          */
-        Random generator = new Random(HashCode.Combine(name, NUM_ROWS, NUM_COLS));
+        int seed = hashCode(name, new[] { NUM_ROWS, NUM_COLS });
+        Random generator = new Random(seed);
         MazeCell[,] maze = makeMaze(NUM_ROWS, NUM_COLS, generator);
 
         List<MazeCell> linearMaze = new List<MazeCell>();
@@ -155,7 +156,7 @@ public class MazeUtilities
         /* Java Random is guaranteed to produce the same sequence of values across
          * all systems with the same seed.
          */
-        Random generator = new Random(HashCode.Combine(name, TWISTY_MAZE_SIZE));
+        Random generator = new Random(hashCode(name, new int[]{TWISTY_MAZE_SIZE}));
         List<MazeCell> maze = makeTwistyMaze(TWISTY_MAZE_SIZE, generator);
 
         /* Find the distances between all pairs of nodes. */
