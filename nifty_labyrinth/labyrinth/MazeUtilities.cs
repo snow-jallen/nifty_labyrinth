@@ -32,27 +32,27 @@ public class MazeUtilities
     public static bool isPathToFreedom(MazeCell start, String moves)
     {
         MazeCell? curr = start;
-        HashSet<String> items = new HashSet<String>();
+        HashSet<Item> items = new HashSet<Item>();
 
         /* Fencepost issue: pick up items from starting location, if any. */
-        if (start.whatsHere != "")
-            items.Add(start.whatsHere);
+        if (start.WhatsHere != Item.Nothing)
+            items.Add(start.WhatsHere);
 
         foreach (char ch in moves.ToCharArray())
         {
             /* Take a step. */
-            if (ch == 'N') curr = curr.north;
-            else if (ch == 'S') curr = curr.south;
-            else if (ch == 'E') curr = curr.east;
-            else if (ch == 'W') curr = curr.west;
+            if (ch == 'N') curr = curr.North;
+            else if (ch == 'S') curr = curr.South;
+            else if (ch == 'E') curr = curr.East;
+            else if (ch == 'W') curr = curr.West;
             else return false; // Unknown character?
 
             /* Was that illegal? */
             if (curr == null) return false;
 
             /* Did we get anything? */
-            if (curr.whatsHere != "")
-                items.Add(curr.whatsHere);
+            if (curr.WhatsHere != Item.Nothing)
+                items.Add(curr.WhatsHere);
         }
 
         /* Do we have all three items? */
@@ -136,9 +136,9 @@ public class MazeUtilities
         int[] locations = remoteLocationsIn(distances);
 
         /* Place the items. */
-        linearMaze[locations[1]].whatsHere = "Spellbook";
-        linearMaze[locations[2]].whatsHere = "Potion";
-        linearMaze[locations[3]].whatsHere = "Wand";
+        linearMaze[locations[1]].WhatsHere = Item.Spellbook;
+        linearMaze[locations[2]].WhatsHere = Item.Potion;
+        linearMaze[locations[3]].WhatsHere = Item.Wand;
 
         /* We begin in position 0. */
         return linearMaze[locations[0]];
@@ -168,9 +168,9 @@ public class MazeUtilities
         int[] locations = remoteLocationsIn(distances);
 
         /* Place the items there. */
-        maze[locations[1]].whatsHere = "Spellbook";
-        maze[locations[2]].whatsHere = "Potion";
-        maze[locations[3]].whatsHere = "Wand";
+        maze[locations[1]].WhatsHere = Item.Spellbook;
+        maze[locations[2]].WhatsHere = Item.Potion;
+        maze[locations[3]].WhatsHere = Item.Wand;
 
         return maze[locations[0]];
     }
@@ -178,10 +178,10 @@ public class MazeUtilities
     /* Returns if two nodes are adjacent. */
     private static bool areAdjacent(MazeCell first, MazeCell second)
     {
-        return first.east == second ||
-               first.west == second ||
-               first.north == second ||
-               first.south == second;
+        return first.East == second ||
+               first.West == second ||
+               first.North == second ||
+               first.South == second;
     }
 
     /* Uses the Floyd-Warshall algorithm to compute the shortest paths between all
@@ -304,8 +304,8 @@ public class MazeUtilities
     {
         foreach (MazeCell node in nodes)
         {
-            node.whatsHere = "";
-            node.north = node.south = node.east = node.west = null;
+            node.WhatsHere = Item.Nothing;
+            node.North = node.South = node.East = node.West = null;
         }
     }
 
@@ -315,10 +315,10 @@ public class MazeUtilities
     private static Port randomFreePortOf(MazeCell cell, Random generator)
     {
         List<Port> ports = new List<Port>();
-        if (cell.east == null) ports.Add(Port.EAST);
-        if (cell.west == null) ports.Add(Port.WEST);
-        if (cell.north == null) ports.Add(Port.NORTH);
-        if (cell.south == null) ports.Add(Port.SOUTH);
+        if (cell.East == null) ports.Add(Port.EAST);
+        if (cell.West == null) ports.Add(Port.WEST);
+        if (cell.North == null) ports.Add(Port.NORTH);
+        if (cell.South == null) ports.Add(Port.SOUTH);
         if (ports.Any() == false) return Port.Undefined;
 
         int port = generator.Next(ports.Count);
@@ -331,16 +331,16 @@ public class MazeUtilities
         switch (link)
         {
             case Port.EAST:
-                from.east = to;
+                from.East = to;
                 break;
             case Port.WEST:
-                from.west = to;
+                from.West = to;
                 break;
             case Port.NORTH:
-                from.north = to;
+                from.North = to;
                 break;
             case Port.SOUTH:
-                from.south = to;
+                from.South = to;
                 break;
             default:
                 throw new ApplicationException("Unknown port.");
@@ -399,10 +399,10 @@ public class MazeUtilities
             {
                 visited.Add(curr);
 
-                if (curr.east != null) frontier.AddLast(curr.east);
-                if (curr.west != null) frontier.AddLast(curr.west);
-                if (curr.north != null) frontier.AddLast(curr.north);
-                if (curr.south != null) frontier.AddLast(curr.south);
+                if (curr.East != null) frontier.AddLast(curr.East);
+                if (curr.West != null) frontier.AddLast(curr.West);
+                if (curr.North != null) frontier.AddLast(curr.North);
+                if (curr.South != null) frontier.AddLast(curr.South);
             }
         }
 
